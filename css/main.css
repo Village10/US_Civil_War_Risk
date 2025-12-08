@@ -1,0 +1,236 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+}
+
+body {
+  background: #9c9c9c;
+  color: #ffffff;
+  font-family: "Alfa Slab One", sans-serif;
+  text-align: center;
+}
+
+p {
+  margin: 0;
+  padding: 0;
+}
+
+button {
+  font-family: "Alfa Slab One", sans-serif;
+  cursor: pointer;
+  background: #d6040e;
+  text-shadow: 2px 2px #222;
+  color: #fff;
+  padding: 0.5vw;
+  font-size: 1.5vw;
+  text-align: center;
+  border-radius: 0.5vw;
+}
+button:hover {
+  background: rgb(250.5779816514, 18.4220183486, 29.4770642202);
+}
+
+.flash {
+  animation: flash infinite 1.5s;
+}
+
+@keyframes flash {
+  0% {
+    opacity: 0.9;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+.map {
+  margin: 0 0;
+  width: 45vw;
+  height: auto;
+}
+
+.area {
+  cursor: pointer;
+}
+
+.unit {
+  font-size: 1.2em;
+  font-family: "Alfa Slab One", sans-serif;
+  pointer-events: none;
+  user-select: none;
+  fill: #fff;
+}
+
+.bars {
+  display: flex;
+  justify-content: center;
+  margin-top: 3vh;
+}
+.bars > div {
+  height: 5vh;
+}
+
+.player-panel {
+  background: #d6040e;
+  width: 13vw;
+  height: 80vh;
+  text-shadow: 0.2vw 0.2vw #222;
+  border-radius: 5px;
+  border: 0.3vw solid #222;
+  margin-top: 8vh;
+  margin-left: 5vw;
+  font-size: 1.4vw;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+}
+.player-panel h1 {
+  color: #030f63;
+  text-shadow: 0.2vw 0.2vw #fff;
+  font-size: 3.5vw;
+  margin-top: 1vh;
+  margin-bottom: 2vh;
+}
+.player-panel button {
+  margin-top: auto;
+  margin-bottom: 2vh;
+  background: #030f63;
+}
+
+.player-panel.player-2 {
+  background: #030f63;
+}
+.player-panel.player-2 h1 {
+  color: #d6040e;
+}
+.player-panel.player-2 button {
+  background: #d6040e;
+}
+
+.stage-message {
+  font-family: "arial", sans-serif;
+  font-size: 1em;
+  margin: 1vw;
+}
+
+.stage-name {
+  color: #030f63;
+  text-shadow: 0.2vw 0.2vw #ffffff;
+  margin: 3vh 1vh;
+  font-size: 1.5em;
+}
+
+.stage-name.player-2 {
+  color: #d6040e;
+}
+
+.stage-tip {
+  font-family: "arial", sans-serif;
+  margin: 1vw;
+  font-size: 1em;
+}
+
+.info-panel {
+  display: none;
+  width: 13vw;
+  height: 80vh;
+  text-align: left;
+  margin-top: 8vh;
+  margin-right: 5vw;
+  flex-direction: column;
+}
+.info-panel > div {
+  border: 2px solid #222;
+  padding: 3px 5px;
+  text-shadow: 2px 2px #222;
+  margin: 5px 0;
+  border-radius: 5px;
+}
+.info-panel > button {
+  margin-top: auto;
+}
+
+.info-one {
+  background: #d6040e;
+}
+.info-one.highlight {
+  background: rgb(251.0458715596, 43.4541284404, 53.3394495413);
+}
+.info-one.defeated {
+  background: #444;
+}
+
+.info-two {
+  background: #030f63;
+}
+.info-two.highlight {
+  background: rgb(4.5, 22.5, 148.5);
+}
+.info-two.defeated {
+  background: #444;
+}
+
+.country-info {
+  background: #444;
+}
+
+.country-info-message {
+  font-family: "arial", sans-serif;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 5;
+  background: rgba(0, 0, 0, 0.6);
+  width: 100%;
+  height: 100vh;
+}
+
+.content {
+  background: #707070;
+  position: relative;
+  width: 500px;
+  top: 150px;
+  margin: 0 auto;
+  border: 4px solid #222;
+  border-radius: 5px;
+  font-size: 1.5em;
+  padding: 10px;
+}
+
+.start-modal {
+  width: 400px;
+  background: #707070;
+  top: 100px;
+  position: relative;
+  margin: 0 auto;
+  font-family: "Alfa Slab One", sans-serif;
+  font-size: 2em;
+  z-index: 6;
+  border: 4px solid #d6040e;
+  border-radius: 5px;
+  color: white;
+  text-shadow: 2px 2px black;
+}
+.start-modal button {
+  margin: 10px auto;
+}
+
+.title {
+  font-size: 2.5em;
+  color: #d6040e;
+  text-shadow: 3px 3px white;
+}
+
+.win-content button {
+  margin: 15px auto;
+}
+
+.win-message {
+  font-size: 3rem;
+  text-shadow: 2px 2px #fff;
+  padding: 10px;
+}
+
+/*# sourceMappingURL=main.css.map */
