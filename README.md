@@ -4,7 +4,7 @@ Original Game: https://github.com/rzencoder/risk
 
 SVG map adapted from https://simplemaps.com/resources/svg-us
 
-Built using Javascript, HTMl, and SASS.
+Built using Javascript, HTML, and SASS.
 
 # The Game
 
