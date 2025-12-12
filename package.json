@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "eruda": "^3.4.3",
+    "firebase": "^12.6.0",
     "sass": "^1.94.2"
   }
 }

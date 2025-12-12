@@ -1,9 +1,9 @@
-"use strict";
+"use strict"
 
 const months = [
     'January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'
-];
+]
 const stages = [
     {
         name: "Deploy",
@@ -62,12 +62,12 @@ const continents = [
 
 class Country {
     constructor(name, army, neighbors) {
-        this.name = name;
-        this.army = army;
-        this.neighbors = neighbors;
+        this.name = name
+        this.army = army
+        this.neighbors = neighbors
     }
 }
-const countries = [
+const states = [
     new Country(
         "TX",
         1,
@@ -243,17 +243,18 @@ const countries = [
         1,
         ["TX", "LA", "AR", "MO", "KS"]
     ),
-];
+]
 
 class Player {
-    constructor(name, country, color, reserve, areas) {
-        this.name = name;
-        this.country = country;
-        this.color = color;
-        this.reserve = reserve;
-        this.areas = areas;
-        this.bonus = 0;
-        this.alive = true;
+    constructor(name, country, color, support, reserve, areas) {
+        this.name = name
+        this.country = country
+        this.color = color
+        this.support = support
+        this.reserve = reserve
+        this.areas = areas
+        this.bonus = 0
+        this.alive = true
     }
 }
 const players = [
@@ -261,6 +262,7 @@ const players = [
         "Jefferson Davis",
         "The Confederacy",
         "#d6040e",
+        60,
         0,
         ["TX", "OK", "KS", "MO", "AR", "LA", "MS", "TN", "AL", "FL", "GA", "SC", "NC", "VA", "KY"],
     ),
@@ -268,12 +270,12 @@ const players = [
         "Abraham Lincoln",
         "The Union",
         "#030f63",
+        71,
         0,
         ["ME", "NH", "VT", "MA", "CT", "RI", "NY", "PA", "NJ", "WV", "DE", "OH", "MI", "WI", "MN", "IA", "NE", "IL", "IN", "MD"],
     ),
-];
+]
 
-// Helper Functions
 Array.prototype.containsArray = function (array) {
     let index
     let last
@@ -290,89 +292,103 @@ Array.prototype.containsArray = function (array) {
         || (last = this.indexOf(array[index], last)) > -1
         && this.containsArray(array, ++index, ++last);
 };
-
 function shuffle(array) {
-    let currentIndex = array.length, temporaryValue, randomIndex;
+    let currentIndex = array.length, temporaryValue, randomIndex
     while (0 !== currentIndex) {
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex -= 1;
-        temporaryValue = array[currentIndex];
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = temporaryValue;
+        randomIndex = Math.floor(Math.random() * currentIndex)
+        currentIndex -= 1
+        temporaryValue = array[currentIndex]
+        array[currentIndex] = array[randomIndex]
+        array[randomIndex] = temporaryValue
     }
-    return array;
+    return array
+}
+function signedString(number) {
+    if (number > 0) {
+        return "+" + number
+    }
+    return String(number)
 }
 
 // DOM Elements
-const infoDate = Array.from(document.getElementsByClassName('date'));
-const infoName = Array.from(document.getElementsByClassName('country'));
-const infoIncome = Array.from(document.getElementsByClassName('income'));
-const areas = Array.from(document.getElementsByClassName('area'));
-const bar = Array.from(document.getElementsByClassName('bar'));
-const map = document.querySelector('#map');
-const circles = document.querySelector('#circles');
+const infoDate = Array.from(document.getElementsByClassName('date'))
+const infoName = Array.from(document.getElementsByClassName('country'))
+const infoSupport = Array.from(document.getElementsByClassName('support'))
+const infoIncome = Array.from(document.getElementsByClassName('income'))
+const areas = Array.from(document.getElementsByClassName('area'))
+const bar = Array.from(document.getElementsByClassName('bar'))
+const map = document.querySelector('#map')
+const circles = document.querySelector('#circles')
 
 // Modals
-const startModal = document.querySelector('#start-modal');
-const reserveDisplay = document.querySelector('#reserve');
-const startButton = document.querySelector('#start-button');
-const winModal = document.querySelector('#win-modal');
-const winMessage = document.querySelector('.win-message');
-const playAgain = document.querySelector('#play-again');
+const startModal = document.querySelector('#start-modal')
+const reserveDisplay = document.querySelector('#reserve')
+const startButton = document.querySelector('#start-button')
+const winModal = document.querySelector('#win-modal')
+const winMessage = document.querySelector('.win-message')
+const playAgain = document.querySelector('#play-again')
+const electionModal = document.querySelector('#election-modal')
+const electionMessage = document.querySelector('.election-message')
+const electionButton = document.querySelector('.election-button')
 
 // Info Panel
-const restart = document.querySelector('#restart');
-const infoPanel = document.querySelector('.info-panel');
-const countryInfoTitle = document.querySelector('.country-info-title');
-const countryInfoMessage = document.querySelector('.country-info-message');
+const restart = document.querySelector('#restart')
+const infoPanel = document.querySelector('.info-panel')
+const countryInfoTitle = document.querySelector('.country-info-title')
+const countryInfoMessage = document.querySelector('.country-info-message')
+const electionInfo = document.querySelector('.election-info')
+const battleInfo = document.querySelector('.battle-info')
+const battleInfoTable = document.querySelector('.battle-info-table')
 
 // Player Panel
-const playerPanel = document.querySelector('.player-panel');
-const stageName = document.querySelector('.stage-name');
-const stageMessage = document.querySelector('.stage-message');
-const stageTip = document.querySelector('.stage-tip');
-const nextStage = document.querySelector('#next-stage');
+const playerPanel = document.querySelector('.player-panel')
+const stageName = document.querySelector('.stage-name')
+const stageMessage = document.querySelector('.stage-message')
+const stageTip = document.querySelector('.stage-tip')
+const nextStage = document.querySelector('#next-stage')
 
-let game_state = {};
+let game_state = {}
 
 game_state.init = function () {
-    startModal.style.display = "block";
+    startModal.style.display = "block"
+    battleInfo.style.display = "none"
     circles.style.display = "none"
     map.style.display = "none"
-    winModal.style.display = "none";
-    startButton.addEventListener('click', this.start.bind(this));
-    restart.addEventListener('click', this.restart.bind(this));
-    map.addEventListener('mousedown', this.handleClick.bind(this));
-    map.addEventListener('mouseover', this.handleMouseOver.bind(this));
-    map.addEventListener('mouseleave', this.handleMouseLeave.bind(this));
-    nextStage.addEventListener('click', this.nextStage.bind(this));
-    playAgain.addEventListener('click', this.restart.bind(this));
+    winModal.style.display = "none"
+    electionModal.style.display = "none"
+    startButton.addEventListener('click', this.start.bind(this))
+    restart.addEventListener('click', this.restart.bind(this))
+    map.addEventListener('mousedown', this.handleClick.bind(this))
+    map.addEventListener('mouseover', this.handleMouseOver.bind(this))
+    map.addEventListener('mouseleave', this.handleMouseLeave.bind(this))
+    nextStage.addEventListener('click', this.nextStage.bind(this))
+    playAgain.addEventListener('click', this.restart.bind(this))
 }
 
 game_state.nextStage = function () {
     if (this.prevTarget) {
-        this.prevTarget.classList.remove('flash');
+        this.prevTarget.classList.remove('flash')
     }
     this.prevTarget = null
     this.prevCountry = null
     if (this.stage === stages.length - 1) {
-        this.stage = 0;
-        stageName.textContent = stages[this.stage].name;
-        stageMessage.textContent = stages[this.stage].message;
-        stageTip.textContent = stages[this.stage].tip;
-        nextStage.textContent = "Next Stage";
-        this.nextTurn();
+        this.stage = 0
+        stageName.textContent = stages[this.stage].name
+        stageMessage.textContent = stages[this.stage].message
+        stageTip.textContent = stages[this.stage].tip
+        nextStage.textContent = "Next Stage"
+        this.nextTurn()
     } else {
         if (!this.stage && this.stage !== 0) {
-            this.stage = 0;
+            this.stage = 0
         } else {
-            this.stage += 1;
+            this.stage += 1
         }
-        stageName.textContent = stages[this.stage].name;
-        stageMessage.textContent = stages[this.stage].message;
-        stageTip.textContent = stages[this.stage].tip;
+        stageName.textContent = stages[this.stage].name
+        stageMessage.textContent = stages[this.stage].message
+        stageTip.textContent = stages[this.stage].tip
         if (this.stage === stages.length - 1) {
-            nextStage.textContent = "End Turn";
+            nextStage.textContent = "End Turn"
         }
     }
 }
@@ -391,23 +407,23 @@ game_state.handleMouseLeave = function () {
 game_state.start = function () {
     map.style.display = "block"
     circles.style.display = "block"
-    nextStage.style.pointerEvents = "auto";
-    map.style.pointerEvents = "auto";
-    startModal.style.display = "none";
-    playerPanel.style.display = "flex";
-    infoPanel.style.display = "flex";
-    this.turn = 0;
-    this.stage = 0
+    nextStage.style.pointerEvents = "auto"
+    map.style.pointerEvents = "auto"
+    startModal.style.display = "none"
+    playerPanel.style.display = "flex"
+    infoPanel.style.display = "flex"
+    this.turn = 0
+    this.stage = -1
     this.nextStage()
-    this.countries = JSON.parse(JSON.stringify(countries));
-    this.players = JSON.parse(JSON.stringify(players));
+    this.states = JSON.parse(JSON.stringify(states))
+    this.players = JSON.parse(JSON.stringify(players))
 
     // Add player details to Info Panel
     for (let j = 0; j < this.players.length; j++) {
-        infoName[j].innerHTML = this.players[j].country;
-        infoName[j].parentElement.classList.remove('defeated');
+        infoName[j].innerHTML = this.players[j].country
+        infoName[j].parentElement.classList.remove('defeated')
         if (this.players[j].alive) {
-            bar[j].style.background = this.players[j].color;
+            bar[j].style.background = this.players[j].color
         }
     }
 
@@ -416,8 +432,8 @@ game_state.start = function () {
         this.players.forEach(player => {
             if (player.areas.includes(area.id)) {
                 setTimeout(() => {
-                    area.style.fill = player.color;
-                    area.nextElementSibling.textContent = this.countries.find(country => country.name === area.id).army;
+                    area.style.fill = player.color
+                    area.nextElementSibling.textContent = this.states.find(country => country.name === area.id).army
                 }, 25 * i)
             }
         })
@@ -427,26 +443,27 @@ game_state.start = function () {
 }
 
 game_state.win = function (player) {
-    winMessage.textContent = player.country;
-    winMessage.style.color = player.color;
-    winModal.style.display = "block";
+    winMessage.textContent = player.country
+    winMessage.style.color = player.color
+    winModal.style.display = "block"
 }
 
 game_state.restart = function () {
-    startModal.style.display = "block";
-    winModal.style.display = "none";
+    electionModal.style.display = "none"
+    startModal.style.display = "block"
+    winModal.style.display = "none"
 }
 
 game_state.nextTurn = function () {
-    this.turn += 1;
-    this.player = this.players[(this.turn - 1) % this.players.length];
+    this.turn += 1
+    this.player = this.players[(this.turn - 1) % this.players.length]
 
     // Unselect country
     if (this.prevTarget) {
-        this.prevTarget.classList.remove('flash');
+        this.prevTarget.classList.remove('flash')
     }
-    this.prevCountry = null;
-    this.prevTarget = null;
+    this.prevCountry = null
+    this.prevTarget = null
 
     // Change player panel colors to current player
     if (this.turn % 2 === 0) {
@@ -458,18 +475,47 @@ game_state.nextTurn = function () {
     }
 
     // Update date & reserve
-    infoDate[0].textContent = months[(this.turn + 3) % 12] + " " + Math.floor(1861 + (this.turn + 3) / 12)
-    this.player.reserve += this.player.bonus;
-    reserveDisplay.innerHTML = this.player.reserve;
+    infoDate[0].textContent = months[(this.turn * 3) % 12] + " " + Math.floor(1861 + (this.turn) / 4)
+    this.player.reserve += this.player.bonus
+    reserveDisplay.innerHTML = this.player.reserve
+
+    // Update election info and run election
+    if (this.turn < 12) {
+        electionInfo.textContent = "Election in "  + (12 - this.turn) * 3 + " months"
+    } else {
+        electionInfo.textContent = ""
+        this.runElection()
+    }
+}
+
+game_state.runElection = function () {
+    electionModal.style.display = "block"
+    if (this.player.support > 0.5) {
+        electionMessage.innerHTML = this.player.name + " has won the election!<br/>"
+            + this.player.support * 100 + "% to " + Math.round((1 - this.player.support) * 100) + "%<br/>"
+        electionButton.addEventListener("click", this.closeElection.bind(this))
+    } else {
+        electionMessage.innerHTML = "George B. McClellan has won the election<br/>"
+            + Math.round((1 - this.player.support) * 100) + "% to " + this.player.support * 100 + "%!<br/>"
+            + "McClellan along with the peace democrats have negotiated a peace treaty with the confederacy, and they have succesfully seceded from the union."
+        electionButton.innerHTML = "Restart Game"
+        electionButton.addEventListener("click", this.restart.bind(this))
+    }
+}
+
+game_state.closeElection = function () {
+    electionModal.style.display = "none"
 }
 
 game_state.updateInfo = function () {
     this.players.forEach((player, i) => {
-        player.bonus = Math.ceil(player.areas.length / 3);
+        player.bonus = Math.ceil(player.areas.length / 3)
         player.bonus += this.continentBonus(player);
-        player.bonus = Math.max(player.bonus, 3);
+        player.bonus = Math.max(player.bonus, 3)
         infoIncome[i].innerHTML = player.bonus
-        bar[i].style.width = (player.areas.length / this.countries.length) * 600 + 'px';
+        player.support = Math.round(player.support * 10) / 10
+        infoSupport[i].textContent = player.support + "%"
+        bar[i].style.width = (player.areas.length / this.states.length) * 600 + 'px'
     })
 }
 
@@ -498,18 +544,18 @@ game_state.handleClick = function (e) {
 }
 
 game_state.addArmy = function (e) {
-    this.countries.forEach(country => {
+    this.states.forEach(country => {
         // Check if Target is in country array and player has enough in reserve and player owns territory
         if (e.target.id === country.name && this.player.reserve > 0 && this.player.areas.includes(country.name)) {
             if (e.shiftKey) {
-                country.army += this.player.reserve;
-                this.player.reserve = 0;
+                country.army += this.player.reserve
+                this.player.reserve = 0
             } else {
-                country.army += 1;
-                this.player.reserve -= 1;
+                country.army += 1
+                this.player.reserve -= 1
             }
-            reserveDisplay.innerHTML = this.player.reserve;
-            e.target.nextElementSibling.textContent = country.army;
+            reserveDisplay.innerHTML = this.player.reserve
+            e.target.nextElementSibling.textContent = country.army
             // Once reserve is empty, battle stage can start
             if (this.player.reserve === 0) {
                 this.nextStage()
@@ -521,12 +567,12 @@ game_state.addArmy = function (e) {
 game_state.attack = function (e) {
     // Remove flash animation from previous area
     if (this.prevTarget) {
-        this.prevTarget.classList.remove('flash');
+        this.prevTarget.classList.remove('flash')
     }
-    this.countries.forEach(country => {
+    this.states.forEach(country => {
         if (e.target.id === country.name) {
-            e.target.classList.add('flash');
-            this.prevTarget = e.target;
+            e.target.classList.add('flash')
+            this.prevTarget = e.target
             if (this.prevCountry) {
                 if (
                     this.prevCountry.name !== country.name
@@ -541,75 +587,91 @@ game_state.attack = function (e) {
                         ) {
                             let defender = document.getElementById(`${country.name}`)
                             let attacker = document.getElementById(`${this.prevCountry.name}`)
-                            let opp;
+                            let opp
                             this.players.forEach(p => {
                                 if (p.areas.includes(country.name)) {
-                                    opp = p;
+                                    opp = p
                                 }
                             })
 
+                            const attackerSupport = this.player.support
+                            const defenderSupport = opp.support
+                            let attackerLosses = 0
+                            let defenderLosses = 0
+
                             // Battle Logic
-                            while (country.army > 0) {
-                                if (this.prevCountry.army === 1) {
-                                    attacker.nextElementSibling.textContent = "1";
-                                    defender.nextElementSibling.textContent = country.army;
-                                    return;
-                                }
+                            while (country.army > 0 && this.prevCountry.army !== 1) {
 
                                 // 21 in 36 chance that defender wins
                                 if (Math.floor(Math.random() * 36) + 1 <= 21) {
-                                    this.prevCountry.army -= 1;
+                                    this.prevCountry.army -= 1
+                                    this.player.support -= 0.1
+                                    attackerLosses -= 1
                                 } else {
-                                    country.army -= 1;
+                                    country.army -= 1
+                                    opp.support -= 0.1
+                                    defenderLosses -= 1
                                 }
                             }
 
                             // Handle if attacker wins
                             if (country.army <= 0) {
 
+                                // Adjust support for both players
+                                this.player.support += 3
+                                opp.support -= 3
+
                                 // Remove area from defenders areas array
-                                const index = opp.areas.indexOf(country.name);
-                                opp.areas.splice(index, 1);
-                                this.player.areas.push(country.name);
+                                const index = opp.areas.indexOf(country.name)
+                                opp.areas.splice(index, 1)
+                                this.player.areas.push(country.name)
 
                                 // Swap defender area to attacker and distribute army evenly between areas
-                                defender.style.fill = this.player.color;
+                                defender.style.fill = this.player.color
                                 if (e?.shiftKey) {
-                                    country.army = 1;
-                                    this.prevCountry.army -= 1;
+                                    country.army = 1
+                                    this.prevCountry.army -= 1
                                 } else {
-                                    country.army = this.prevCountry.army - 1;
-                                    this.prevCountry.army = 1;
+                                    country.army = this.prevCountry.army - 1
+                                    this.prevCountry.army = 1
                                 }
-                                defender.nextElementSibling.textContent = String(country.army);
-                                attacker.nextElementSibling.textContent = String(this.prevCountry.army);
                                 this.updateInfo()
 
                                 // If defender has no areas left they are eliminated
                                 if (opp.areas.length === 0) {
-                                    opp.alive = false;
+                                    opp.alive = false
                                     let index = this.players.indexOf(opp)
-                                    infoName[index].parentElement.classList.add('defeated');
+                                    infoName[index].parentElement.classList.add('defeated')
+                                }
+
+                                // Win Condition
+                                if (this.player.areas.length === states.length) {
+                                    this.win(this.player)
                                 }
                             }
-
-                            // Win Condition
-                            if (this.player.areas.length === countries.length) {
-                                this.win(this.player);
-                            }
+                            defender.nextElementSibling.textContent = String(country.army)
+                            attacker.nextElementSibling.textContent = String(this.prevCountry.army)
+                            battleInfoTable.rows[0].cells[0].textContent = this.prevCountry.name
+                            battleInfoTable.rows[0].cells[2].textContent = country.name
+                            battleInfoTable.rows[1].cells[0].textContent = signedString(attackerLosses)
+                            battleInfoTable.rows[1].cells[2].textContent = signedString(defenderLosses)
+                            battleInfoTable.rows[2].cells[0].textContent = signedString(Math.round((this.player.support - attackerSupport) * 10) / 10)
+                            battleInfoTable.rows[2].cells[2].textContent = signedString(Math.round((opp.support - defenderSupport) * 10) / 10)
+                            battleInfo.style.display = "block"
                         }
                     })
                 }
             }
-            this.prevCountry = country;
+            this.prevCountry = country
+            this.updateInfo()
         }
-    });
+    })
 }
 
 game_state.fortify = function (e) {
     if (this.player.areas.includes(e.target.id)) {
         if (this.prevCountry) {
-            const target = this.countries.find(country => country.name === e.target.id)
+            const target = this.states.find(country => country.name === e.target.id)
             if (e.shiftKey) {
                 target.army += Math.floor(this.prevCountry.army / 2)
                 this.prevCountry.army = Math.ceil(this.prevCountry.army / 2)
@@ -617,19 +679,19 @@ game_state.fortify = function (e) {
                 target.army += this.prevCountry.army - 1
                 this.prevCountry.army = 1
             }
-            e.target.nextElementSibling.textContent = String(target.army);
-            this.prevTarget.nextElementSibling.textContent = String(this.prevCountry.army);
+            e.target.nextElementSibling.textContent = String(target.army)
+            this.prevTarget.nextElementSibling.textContent = String(this.prevCountry.army)
             this.nextStage()
         } else {
-            this.countries.forEach(country => {
+            this.states.forEach(country => {
                 if (e.target.id === country.name) {
-                    e.target.classList.add('flash');
-                    this.prevTarget = e.target;
-                    this.prevCountry = country;
+                    e.target.classList.add('flash')
+                    this.prevTarget = e.target
+                    this.prevCountry = country
                 }
             })
         }
     }
 }
 
-game_state.init();
+game_state.init()

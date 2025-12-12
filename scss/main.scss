@@ -176,6 +176,14 @@ button {
   }
 }
 
+.info-zero {
+  background: $defeatedColor;
+}
+
+.election-info {
+  font-family: 'arial', sans-serif;
+}
+
 .info-one {
   background: $playerOneColor;
 
@@ -271,4 +279,33 @@ button {
   font-size: 3rem;
   text-shadow: 2px 2px #fff;
   padding: 10px;
+}
+
+// Election
+
+.election-message {
+  margin-top: 2vh;
+  font-family: 'arial', sans-serif;
+}
+
+.election-button {
+  margin-top: 4vh;
+}
+
+// Battle Info
+
+.battle-info {
+  background-color: $defeatedColor;
+}
+
+.battle-info-table {
+  text-align: center;
+  width: 100%;
+  font-family: 'arial', sans-serif;
+  > .battle-info-table-row2 {
+    font-family: 'arial', sans-serif;
+  }
+  > .battle-info-table-row3 {
+    font-family: 'arial', sans-serif;
+  }
 }

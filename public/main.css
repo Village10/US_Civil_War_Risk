@@ -149,6 +149,14 @@ button:hover {
   margin-top: auto;
 }
 
+.info-zero {
+  background: #444;
+}
+
+.election-info {
+  font-family: "arial", sans-serif;
+}
+
 .info-one {
   background: #d6040e;
 }
@@ -231,6 +239,31 @@ button:hover {
   font-size: 3rem;
   text-shadow: 2px 2px #fff;
   padding: 10px;
+}
+
+.election-message {
+  margin-top: 2vh;
+  font-family: "arial", sans-serif;
+}
+
+.election-button {
+  margin-top: 4vh;
+}
+
+.battle-info {
+  background-color: #444;
+}
+
+.battle-info-table {
+  text-align: center;
+  width: 100%;
+  font-family: "arial", sans-serif;
+}
+.battle-info-table > .battle-info-table-row2 {
+  font-family: "arial", sans-serif;
+}
+.battle-info-table > .battle-info-table-row3 {
+  font-family: "arial", sans-serif;
 }
 
 /*# sourceMappingURL=main.css.map */
