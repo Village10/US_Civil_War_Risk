@@ -21,12 +21,30 @@ const stages = [
         tip: "Hold shift to only move half of the armies",
     }
 ]
-const continents = [
+const regions = [
+    {
+        areas: ["KY", "VA", "MD", "MO", "DE", "WV"],
+        displayName: "Border States",
+        name: "border_states",
+        bonus: 4
+    },
+    {
+        areas: ["AL", "FL", "GA", "SC", "NC", "TN"],
+        displayName: "South East",
+        name: "south_east",
+        bonus: 3
+    },
     {
         areas: ["ME", "NH", "VT", "MA", "CT", "RI"],
         displayName: "New England",
         name: "new_england",
-        bonus: 5
+        bonus: 2
+    },
+    {
+        areas: ["TX", "AR", "KS", "LA", "MS", "OK"],
+        displayName: "South West",
+        name: "south_west",
+        bonus: 2
     },
     {
         areas: ["OH", "NJ", "NY", "PA"],
@@ -40,24 +58,6 @@ const continents = [
         name: "north_west",
         bonus: 1
     },
-    {
-        areas: ["KY", "VE", "MV", "MD", "MO", "DE"],
-        displayName: "Border States",
-        name: "border_states",
-        bonus: 4
-    },
-    {
-        areas: ["AL", "FL", "GA", "SC", "NC", "TN"],
-        displayName: "South East",
-        name: "south_east",
-        bonus: 5
-    },
-    {
-        areas: ["TX", "AR", "KS", "LA", "MS"],
-        displayName: "South West",
-        name: "south_west",
-        bonus: 2
-    },
 ];
 
 class Country {
@@ -70,17 +70,17 @@ class Country {
 const states = [
     new Country(
         "TX",
-        1,
+        6,
         ["NM", "AR", "LA", "OK"]
     ),
     new Country(
         "AR",
-        1,
+        5,
         ["MO", "TN", "MS", "LA", "TX", "OK"]
     ),
     new Country(
         "KS",
-        1,
+        2,
         ["NE", "MO", "CO", "OK"]
     ),
     new Country(
@@ -90,107 +90,107 @@ const states = [
     ),
     new Country(
         "MN",
-        1,
+        2,
         ["ND", "SD", "IA", "WI"]
     ),
     new Country(
         "LA",
-        1,
+        6,
         ["AR", "MS", "TX", "OK"]
     ),
     new Country(
         "MO",
-        1,
+        10,
         ["IA", "IL", "KY", "TN", "AR", "KS", "NE", "OK"]
     ),
     new Country(
         "IA",
-        1,
+        4,
         ["MN", "WI", "IL", "MO", "NE", "SD"]
     ),
     new Country(
         "WI",
-        1,
+        5,
         ["MN", "IA", "IL", "MI"]
     ),
     new Country(
         "IL",
-        1,
+        15,
         ["WI", "IA", "MO", "KY", "IN"]
     ),
     new Country(
         "TN",
-        1,
+        10,
         ["KY", "VA", "NC", "GA", "AL", "MS", "AR", "MO"]
     ),
     new Country(
         "MS",
-        1,
+        7,
         ["TN", "AL", "LA", "AR"]
     ),
     new Country(
         "AL",
-        1,
+        8,
         ["TN", "GA", "FL", "MS"]
     ),
     new Country(
         "GA",
-        1,
+        10,
         ["TN", "NC", "SC", "FL", "AL"]
     ),
     new Country(
         "FL",
-        1,
+        2,
         ["AL", "GA"]
     ),
     new Country(
         "SC",
-        1,
+        5,
         ["NC", "GA"]
     ),
     new Country(
         "NC",
-        1,
+        8,
         ["VA", "TN", "GA", "SC"]
     ),
     new Country(
         "VA",
-        1,
+        11,
         ["MD", "DC", "WV", "KY", "TN", "NC"]
     ),
     new Country(
         "WV",
-        1,
+        2,
         ["PA", "MD", "VA", "KY", "OH"]
     ),
     new Country(
         "KY",
-        1,
+        6,
         ["OH", "WV", "VA", "TN", "MO", "IL", "IN"]
     ),
     new Country(
         "IN",
-        1,
+        11,
         ["MI", "OH", "KY", "IL"]
     ),
     new Country(
         "MI",
-        1,
+        6,
         ["WI", "IN", "OH"]
     ),
     new Country(
         "OH",
-        1,
+        18,
         ["MI", "IN", "KY", "WV", "PA"]
     ),
     new Country(
         "PA",
-        1,
+        20,
         ["NY", "NJ", "DE", "MD", "WV", "OH"]
     ),
     new Country(
         "MD",
-        1,
+        3,
         ["PA", "DE", "VA", "WV", "DC"]
     ),
     new Country(
@@ -200,42 +200,42 @@ const states = [
     ),
     new Country(
         "NJ",
-        1,
+        4,
         ["NY", "PA", "DE"]
     ),
     new Country(
         "NY",
-        1,
+        20,
         ["VT", "MA", "CT", "NJ", "PA"]
     ),
     new Country(
         "CT",
-        1,
+        3,
         ["MA", "RI", "NY"]
     ),
     new Country(
         "RI",
-        1,
+        2,
         ["MA", "CT"]
     ),
     new Country(
         "MA",
-        1,
+        7,
         ["NH", "VT", "NY", "CT", "RI"]
     ),
     new Country(
         "VT",
-        1,
+        2,
         ["NY", "NH", "MA"]
     ),
     new Country(
         "NH",
-        1,
+        2,
         ["VT", "ME", "MA"]
     ),
     new Country(
         "ME",
-        1,
+        3,
         ["NH"]
     ),
     new Country(
@@ -317,7 +317,9 @@ const infoSupport = Array.from(document.getElementsByClassName('support'))
 const infoIncome = Array.from(document.getElementsByClassName('income'))
 const areas = Array.from(document.getElementsByClassName('area'))
 const bar = Array.from(document.getElementsByClassName('bar'))
-const map = document.querySelector('#map')
+const map = document.querySelector('.map')
+const actualMap = document.querySelector('#map')
+const regionsDisplay = document.querySelector('.regions')
 const circles = document.querySelector('#circles')
 
 // Modals
@@ -332,13 +334,14 @@ const electionMessage = document.querySelector('.election-message')
 const electionButton = document.querySelector('.election-button')
 
 // Info Panel
-const restart = document.querySelector('#restart')
 const infoPanel = document.querySelector('.info-panel')
 const countryInfoTitle = document.querySelector('.country-info-title')
 const countryInfoMessage = document.querySelector('.country-info-message')
 const electionInfo = document.querySelector('.election-info')
 const battleInfo = document.querySelector('.battle-info')
 const battleInfoTable = document.querySelector('.battle-info-table')
+const regionButton = document.querySelector('.region-button')
+const restart = document.querySelector('#restart')
 
 // Player Panel
 const playerPanel = document.querySelector('.player-panel')
@@ -358,11 +361,22 @@ game_state.init = function () {
     electionModal.style.display = "none"
     startButton.addEventListener('click', this.start.bind(this))
     restart.addEventListener('click', this.restart.bind(this))
-    map.addEventListener('mousedown', this.handleClick.bind(this))
-    map.addEventListener('mouseover', this.handleMouseOver.bind(this))
-    map.addEventListener('mouseleave', this.handleMouseLeave.bind(this))
+    regionButton.addEventListener('click', this.toggleRegionDisplay.bind(this))
+    actualMap.addEventListener('mousedown', this.handleClick.bind(this))
+    actualMap.addEventListener('mouseover', this.handleMouseOver.bind(this))
+    actualMap.addEventListener('mouseleave', this.handleMouseLeave.bind(this))
     nextStage.addEventListener('click', this.nextStage.bind(this))
     playAgain.addEventListener('click', this.restart.bind(this))
+}
+
+game_state.toggleRegionDisplay = function () {
+    if (regionButton.textContent === "Show Regions") {
+        regionsDisplay.style.display = "block";
+        regionButton.textContent = "Hide Regions"
+    } else {
+        regionsDisplay.style.display = "none";
+        regionButton.textContent = "Show Regions"
+    }
 }
 
 game_state.nextStage = function () {
@@ -394,21 +408,25 @@ game_state.nextStage = function () {
 }
 
 game_state.handleMouseOver = function (e) {
+    if (e.target.id === "map") {
+        game_state.handleMouseLeave()
+    } else {
     countryInfoTitle.innerHTML = e.target.id
     countryInfoMessage.innerHTML = "Owner:<br/>" + this.players.find(player => player.areas.includes(e.target.id)).country
-        + "<br/>Region:<br/>" + continents.find(continent => continent.areas.includes(e.target.id))?.displayName + "<br/>";
+        + "<br/>Region:<br/>" + regions.find(region => region.areas.includes(e.target.id))?.displayName + "<br/>";
+    }
 }
 
 game_state.handleMouseLeave = function () {
     countryInfoTitle.innerHTML = 'Region Bonuses:';
-    countryInfoMessage.innerHTML = continents.map(continent => continent.displayName + ": " + continent.bonus).join('<br/>');
+    countryInfoMessage.innerHTML = regions.map(region => region.displayName + ": " + region.bonus).join('<br/>');
 }
 
 game_state.start = function () {
     map.style.display = "block"
     circles.style.display = "block"
     nextStage.style.pointerEvents = "auto"
-    map.style.pointerEvents = "auto"
+    actualMap.style.pointerEvents = "auto"
     startModal.style.display = "none"
     playerPanel.style.display = "flex"
     infoPanel.style.display = "flex"
@@ -490,13 +508,13 @@ game_state.nextTurn = function () {
 
 game_state.runElection = function () {
     electionModal.style.display = "block"
-    if (this.player.support > 0.5) {
+    if (this.player.support >= 50) {
         electionMessage.innerHTML = this.player.name + " has won the election!<br/>"
-            + this.player.support * 100 + "% to " + Math.round((1 - this.player.support) * 100) + "%<br/>"
+            + this.player.support + "% to " + (100 - this.player.support) + "%<br/>"
         electionButton.addEventListener("click", this.closeElection.bind(this))
     } else {
         electionMessage.innerHTML = "George B. McClellan has won the election<br/>"
-            + Math.round((1 - this.player.support) * 100) + "% to " + this.player.support * 100 + "%!<br/>"
+            + (100 - this.player.support) + "% to " + this.player.support + "%!<br/>"
             + "McClellan along with the peace democrats have negotiated a peace treaty with the confederacy, and they have succesfully seceded from the union."
         electionButton.innerHTML = "Restart Game"
         electionButton.addEventListener("click", this.restart.bind(this))
@@ -510,7 +528,7 @@ game_state.closeElection = function () {
 game_state.updateInfo = function () {
     this.players.forEach((player, i) => {
         player.bonus = Math.ceil(player.areas.length / 3)
-        player.bonus += this.continentBonus(player);
+        player.bonus += this.regionBonus(player);
         player.bonus = Math.max(player.bonus, 3)
         infoIncome[i].innerHTML = player.bonus
         player.support = Math.round(player.support * 10) / 10
@@ -519,11 +537,11 @@ game_state.updateInfo = function () {
     })
 }
 
-game_state.continentBonus = function (player) {
+game_state.regionBonus = function (player) {
     let bonus = 0;
-    continents.forEach(continent => {
-        if (player.areas.containsArray(continent.areas)) {
-            bonus += continent.bonus;
+    regions.forEach(region => {
+        if (player.areas.containsArray(region.areas)) {
+            bonus += region.bonus;
         }
     })
     return bonus;
@@ -605,11 +623,11 @@ game_state.attack = function (e) {
                                 // 21 in 36 chance that defender wins
                                 if (Math.floor(Math.random() * 36) + 1 <= 21) {
                                     this.prevCountry.army -= 1
-                                    this.player.support -= 0.1
+                                    this.player.support -= 0.5
                                     attackerLosses -= 1
                                 } else {
                                     country.army -= 1
-                                    opp.support -= 0.1
+                                    opp.support -= 0.2
                                     defenderLosses -= 1
                                 }
                             }
